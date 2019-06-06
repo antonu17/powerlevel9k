@@ -1702,6 +1702,16 @@ prompt_kubecontext() {
       cur_namespace="default"
     fi
 
+    if [[ "${(t)POWERLEVEL9K_KUBECONTEXT_LABELS}" = "array" ]]; then
+      for label in ${POWERLEVEL9K_KUBECONTEXT_LABELS}; do
+        label_arr=( ${(s.=.)label} )
+        if [[ "${label_arr[1]}" = "${cur_ctx}" ]]; then
+          cur_ctx=${label_arr[2]}
+          break
+        fi
+      done
+    fi
+
     local k8s_final_text=""
 
     if [[ "$cur_ctx" == "$cur_namespace" ]]; then
